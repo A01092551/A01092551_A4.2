@@ -164,11 +164,8 @@ def write_results_to_file(output_text, output_dir=None):
     Escribe resultados a StatisticsResults.txt en el directorio especificado.
     """
     if output_dir is None:
-        output_dir = Path(
-            r"D:\Documentos\Maestria Inteligencia artificial"
-            r"\Pruebas de software y aseguramiento de la calidad"
-            r"\A4.2\4.2\results"
-        )
+        script_dir = Path(__file__).parent
+        output_dir = script_dir.parent / "results"
 
     try:
         output_path = Path(output_dir)
@@ -196,11 +193,8 @@ def main():
 
     file_name = sys.argv[1]
 
-    base_path = Path(
-        r"D:\Documentos\Maestria Inteligencia artificial"
-        r"\Pruebas de software y aseguramiento de la calidad\A4.2\4.2\P1"
-    )
-    file_path = base_path / file_name
+    script_dir = Path(__file__).parent
+    file_path = script_dir.parent / "tests" / file_name
 
     start_time = time.time()
 
@@ -214,24 +208,17 @@ def main():
     print(f"Se leyeron exitosamente {len(numbers)} números.")
     print("\nCalculando estadísticas...")
 
-    count = len(numbers)
     mean = calculate_mean(numbers)
-    median = calculate_median(numbers)
-    mode = calculate_mode(numbers)
     variance = calculate_variance(numbers, mean)
-    std_dev = calculate_standard_deviation(variance)
-
-    end_time = time.time()
-    elapsed_time = end_time - start_time
 
     stats_data = {
-        'count': count,
+        'count': len(numbers),
         'mean': mean,
-        'median': median,
-        'mode': mode,
+        'median': calculate_median(numbers),
+        'mode': calculate_mode(numbers),
         'variance': variance,
-        'std_dev': std_dev,
-        'elapsed_time': elapsed_time
+        'std_dev': calculate_standard_deviation(variance),
+        'elapsed_time': time.time() - start_time
     }
 
     output_text = format_output(file_name, stats_data)

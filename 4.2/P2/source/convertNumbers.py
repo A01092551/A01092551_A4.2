@@ -141,11 +141,8 @@ def write_results_to_file(output_text, output_dir=None):
     Escribe resultados a ConvertionResults.txt en el directorio especificado.
     """
     if output_dir is None:
-        output_dir = Path(
-            r"D:\Documentos\Maestria Inteligencia artificial"
-            r"\Pruebas de software y aseguramiento de la calidad"
-            r"\A4.2\5.2\results"
-        )
+        script_dir = Path(__file__).parent
+        output_dir = script_dir.parent / "results"
 
     try:
         output_path = Path(output_dir)
@@ -173,10 +170,8 @@ def main():
 
     file_name = sys.argv[1]
 
-    base_path = Path(
-        r"D:\Documentos\Maestria Inteligencia artificial"
-        r"\Pruebas de software y aseguramiento de la calidad\A4.2\5.2\P2"
-    )
+    script_dir = Path(__file__).parent
+    base_path = script_dir.parent / "tests"
     file_path = base_path / file_name
 
     start_time = time.time()
