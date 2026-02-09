@@ -13,10 +13,10 @@ from pathlib import Path
 
 def read_data_from_file(file_path):
     """
-    Lee números del archivo, manejando datos inválidos.
-    Retorna lista de números enteros válidos.
+    Lee datos del archivo, manejando datos inválidos.
+    Retorna lista de tuplas (valor_original, número_o_None).
     """
-    numbers = []
+    data = []
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             for line_num, line in enumerate(file, 1):
@@ -25,10 +25,11 @@ def read_data_from_file(file_path):
                     continue
                 try:
                     number = int(float(line))
-                    numbers.append(number)
+                    data.append((line, number))
                 except ValueError:
                     print(f"Error: Dato inválido en la línea {line_num}: '{line}'")
                     print("Continuando ejecución...")
+                    data.append((line, None))
     except FileNotFoundError:
         print(f"Error: Archivo '{file_path}' no encontrado.")
         sys.exit(1)
@@ -36,7 +37,7 @@ def read_data_from_file(file_path):
         print(f"Error al leer archivo: {error}")
         sys.exit(1)
 
-    return numbers
+    return data
 
 
 def convert_to_binary(number):
@@ -181,30 +182,37 @@ def main():
     start_time = time.time()
 
     print(f"Leyendo datos de: {file_path}")
-    numbers = read_data_from_file(file_path)
+    data = read_data_from_file(file_path)
 
-    if len(numbers) == 0:
-        print("Error: No se encontraron números válidos en el archivo.")
+    if len(data) == 0:
+        print("Error: No se encontraron datos en el archivo.")
         sys.exit(1)
 
-    print(f"Se leyeron exitosamente {len(numbers)} números.")
+    print(f"Se leyeron {len(data)} líneas.")
     print("\nConvirtiendo números...")
 
     conversions = []
-    for num in numbers:
-        binary = convert_to_binary(num)
-        hexadecimal = convert_to_hexadecimal(num)
-        conversions.append({
-            'decimal': num,
-            'binary': binary,
-            'hex': hexadecimal
-        })
+    for original_value, num in data:
+        if num is None:
+            conversions.append({
+                'decimal': original_value,
+                'binary': 'NaN',
+                'hex': 'NaN'
+            })
+        else:
+            binary = convert_to_binary(num)
+            hexadecimal = convert_to_hexadecimal(num)
+            conversions.append({
+                'decimal': num,
+                'binary': binary,
+                'hex': hexadecimal
+            })
 
     end_time = time.time()
     elapsed_time = end_time - start_time
 
     conversion_data = {
-        'count': len(numbers),
+        'count': len(data),
         'conversions': conversions,
         'elapsed_time': elapsed_time
     }
