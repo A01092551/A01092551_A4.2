@@ -107,9 +107,12 @@ def calculate_mode(numbers):
 
 def calculate_variance(numbers, mean):
     """
-    Calcula la varianza usando algoritmo básico.
+    Calcula la varianza muestral usando algoritmo básico (N-1).
     """
     if len(numbers) == 0:
+        return 0
+
+    if len(numbers) == 1:
         return 0
 
     sum_squared_diff = 0
@@ -118,7 +121,7 @@ def calculate_variance(numbers, mean):
         squared_diff = diff * diff
         sum_squared_diff = sum_squared_diff + squared_diff
 
-    variance = sum_squared_diff / len(numbers)
+    variance = sum_squared_diff / (len(numbers) - 1)
     return variance
 
 

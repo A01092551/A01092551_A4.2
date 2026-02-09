@@ -117,21 +117,21 @@ def format_output(file_name, conversion_data):
         conversion_data: Diccionario conteniendo conversiones y metadatos
     """
     output = []
-    output.append("=" * 70)
+    output.append("=" * 80)
     output.append("RESULTADOS DE CONVERSIÓN")
-    output.append("=" * 70)
+    output.append("=" * 80)
     output.append(f"Archivo: {file_name}")
     output.append(f"Números procesados: {conversion_data['count']}")
-    output.append("=" * 70)
-    output.append(f"{'Número':<15} {'Binario':<30} {'Hexadecimal':<15}")
-    output.append("-" * 70)
+    output.append("=" * 80)
+    output.append(f"{'#':<5} {'Número':<15} {'Binario':<30} {'Hexadecimal':<15}")
+    output.append("-" * 80)
 
-    for item in conversion_data['conversions']:
-        output.append(f"{item['decimal']:<15} {item['binary']:<30} {item['hex']:<15}")
+    for index, item in enumerate(conversion_data['conversions'], start=1):
+        output.append(f"{index:<5} {item['decimal']:<15} {item['binary']:<30} {item['hex']:<15}")
 
-    output.append("=" * 70)
+    output.append("=" * 80)
     output.append(f"Tiempo de ejecución: {conversion_data['elapsed_time']:.4f} segundos")
-    output.append("=" * 70)
+    output.append("=" * 80)
 
     return "\n".join(output)
 
